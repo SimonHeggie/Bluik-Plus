@@ -8,23 +8,30 @@ This fork significantly improves reliability and correctness of OCA imports comp
 
 ## Key Features
 
-- Robust **blend mode support** via a deterministic `BLEND-MODE` shader node group
-- Correct handling of **image clone layers**
-  - Shared mesh datablocks
-  - Independent per-object materials (object-linked slots)
-  - Independent opacity animation
-- **Animated cropped / trimmed frame compensation**
-  - Per-frame transform keying to preserve visual alignment
-- Deterministic post-import audit and diagnostics for useful bug reports
-- Duik-compatible scene setup maintained with .OCA version 1.20
+
+-Basic layer blend mode support (normal, add, luminosity, multiply)
+
+-Clone layers supported with shared mesh data and object based materials for individual control
+
+-Fixed cropped / trimmed animated frames via transform keying, plays at correct size.
+
+-Fixed document resolution and camera orthographic scale not working in certain documents.
+
+-Expanded .OCA import control options
+
 
 ---
+
+![alt text](https://github.com/SimonHeggie/Bluik-Plus/blob/main/ImportMenu.png?raw=true)
 
 ## Installation:
 
 -Go to releases and get latest zip file. (Don't unzip)
+
 -Edit/Preferences/Extensions.
--Top right arrow, 'Install from disk'
+
+-Top right arrow, 'Install from disk'.
+
 -Select the zip file and hit enter. Done.
 
 ## Supported Blend Modes
