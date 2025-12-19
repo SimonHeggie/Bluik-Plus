@@ -13,11 +13,10 @@ This fork significantly improves reliability and correctness of OCA imports comp
   - Shared mesh datablocks
   - Independent per-object materials (object-linked slots)
   - Independent opacity animation
-  - Correct depth (Y) placement
 - **Animated cropped / trimmed frame compensation**
   - Per-frame transform keying to preserve visual alignment
-- Deterministic post-import audit and diagnostics
-- Duik-compatible scene setup (camera, depth, layering)
+- Deterministic post-import audit and diagnostics for useful bug reports
+- Duik-compatible scene setup maintained with .OCA version 1.20
 
 ---
 
@@ -39,18 +38,7 @@ Unsupported or incompatible modes are **warned** and safely fall back to `normal
 ## Versioning
 
 This release represents a **major functional improvement** over 0.7.5.
-
-See `CHANGELOG.md` for full details.
-
----
-
-## Notes for Developers
-
-- The node group datablock name is **`BLEND-MODE`**
-  - Do not search by UI label (“Blend Mode”)
-- Material Output sockets accept only **one incoming link**
-- Clone layers are resolved *after* originals are created
-- Object-linked material slots are required for per-clone animation
+Therefore, first release to follow this is named; 0.8.0
 
 ---
 
