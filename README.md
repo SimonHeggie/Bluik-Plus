@@ -1,4 +1,4 @@
-# Bluik – OCA Importer for Blender (Duik 2D)
+# Bluik - OCA Importer for Blender (Duik 2D)
 
 Bluik is a Blender importer for **Open Cel Animation (.oca)** documents, targeting a Krita → Blender → game/VFX pipeline using **Duik 2D** conventions.
 
