@@ -20,6 +20,13 @@ This fork significantly improves reliability and correctness of OCA imports comp
 
 ---
 
+## Installation:
+
+-Go to releases and get latest zip file. (Don't unzip)
+-Edit/Preferences/Extensions.
+-Top right arrow, 'Install from disk'
+-Select the zip file and hit enter. Done.
+
 ## Supported Blend Modes
 
 OCA/Krita blend modes are mapped to a stable compatibility subset:
