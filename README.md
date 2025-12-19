@@ -35,6 +35,14 @@ Unsupported or incompatible modes are **warned** and safely fall back to `normal
 
 ---
 
+## Refressions:
+
+-Automatic version updates were removed to comply with Standard Blender Extension practice.
+
+## Other notes:
+
+-Updated from old blender addon structure to include blender manifest to store addon details.
+
 ## Versioning
 
 This release represents a **major functional improvement** over 0.7.5.
