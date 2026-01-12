@@ -68,4 +68,3 @@ Therefore, first release to follow this is named; 0.8.0
 
 GPL-3.0  
 Original work by RxLaboratory contributors.  
-This fork contains significant functional changes and fixes.
