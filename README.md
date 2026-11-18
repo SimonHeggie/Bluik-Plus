@@ -1,66 +1,28 @@
-# Bluik - OCA Importer for Blender (Duik 2D)
+# Bluik-Plus
 
-Bluik is a Blender importer for **Open Cel Animation (.oca)** documents, targeting a Krita → Blender → game/VFX pipeline using **Duik 2D** conventions.
+**OCA artwork and animation import for Blender.** Bluik-Plus brings layered 2D documents into Blender as editable scene elements, with tools for cutout animation and Duik-style workflows. It is a fork of Bluik, originally developed by Nicolas Dufresne and contributors.
 
-This fork significantly improves reliability and correctness of OCA imports compared to upstream 0.7.5, with a focus on blend modes, clone layers, and animated frame handling.
+## Features
 
----
+- **OCA import:** Import layered stills and animated documents, including supported OCA 1.3 layers, SVG artwork, image sequences, references, nested sources and opacity data.
+- **Artwork reuse:** Keep supported image and Grease Pencil clones linked to their source data while allowing each instance to have its own placement and animation.
+- **Layer organization:** Create Blender scene objects and collections with imported artwork order, names, visibility and placement.
+- **Transform import:** Read supported position, cropped-frame placement, scale and rotation data. Preserve stepped frame animation, signed scaling, image flips and per-instance transforms.
+- **Paint and blend modes:** Translate supported OCA blend modes into Blender materials and shader configurations, with documented approximations for unsupported combinations.
+- **Cutout tools:** Retain the existing 2D rigging, layer, selection and animation controls included with Bluik.
 
-## Key Features
+Rotation and scale values outside the standard OCA fields are supported as Bluik import extensions. Some vector effects, nested group compositing and 3D intersections may render differently from their source editors.
 
+## Installation
 
--Basic layer blend mode support (normal, add, luminosity, multiply)
+Download the current **Blender extension ZIP** from [Releases](https://github.com/SimonHeggie/Bluik-Plus/releases) and install it through **Edit > Preferences > Get Extensions > Install from Disk**. Do not extract it first. A legacy add-on ZIP is provided separately where needed.
 
--Clone layers supported with shared mesh data and object based materials for individual control
+The extension manifest requires **Blender 4.5 or newer**. Transform handling and animation have been tested in Blender 5.3 beta, but that does not certify every Blender version or receiving document.
 
--Fixed cropped / trimmed animated frames via transform keying, plays at correct size.
+## Documentation
 
--Fixed document resolution and camera orthographic scale not working in certain documents.
+See [Bluik documentation](https://bluik.rxlab.guide/) for the underlying toolset. Version changes are recorded in [GitHub Releases](https://github.com/SimonHeggie/Bluik-Plus/releases).
 
--Expanded .OCA import control options
+## Licence and attribution
 
-
----
-
-![alt text](https://github.com/SimonHeggie/Bluik-Plus/blob/main/ImportMenu.png?raw=true)
-
-## Installation:
-
--Go to releases and get latest zip file. (Don't unzip)
-
--Edit/Preferences/Extensions.
-
--Top right arrow, 'Install from disk'.
-
--Select the zip file and hit enter. Done.
-
-## Supported Blend Modes
-
-OCA/Krita blend modes are mapped to a stable compatibility subset:
-
-| OCA Blend Mode | Blender Output |
-|---------------|----------------|
-| normal        | normal         |
-| add / screen | add            |
-| multiply     | multiply       |
-| dodge / glow | luminosity (approximate) |
-
-Unsupported or incompatible modes are **warned** and safely fall back to `normal`.
-
----
-
-## Regressions:
-
--Automatic version updates were removed to comply with Standard Blender Extension practice.
-
-## Other notes:
-
--Updated from old blender addon structure to include blender manifest to store addon details.
-
-
----
-
-## License
-
-GPL-3.0  
-Original work by RxLaboratory contributors.  
+GPL-3.0-or-later. Original project by Nicolas Dufresne and contributors. Bluik-Plus modifications by Simon Heggie. See [LICENSE](LICENSE).

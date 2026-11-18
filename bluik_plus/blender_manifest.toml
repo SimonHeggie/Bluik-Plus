@@ -1,0 +1,26 @@
+schema_version = "1.0.0"
+
+id = "bluik_plus"
+name = "Bluik-Plus"
+version = "0.8.3"
+
+type = "add-on"
+tagline = "Import and animate .OCA files. Similar to COA Tools, with broader compatibility including Spine IO workflows."
+
+maintainer = "Simon Heggie"
+
+blender_version_min = "4.5.0"
+
+license = ["GPL-3.0-or-later"]
+
+description = """
+Advanced control and interchange of 2D cut out layered scenes for .OCA and .OCO.
+Fork of Bluik 0.7.5 with major runtime and pipeline changes.
+Not an official RxLab release.
+
+Documentation: https://bluik.rxlab.guide/
+"""
+
+tags = ["Import-Export", "Animation"]
+
+website = "https://github.com/SimonHeggie/Bluik-Plus"

@@ -1,0 +1,137 @@
+
+import json
+
+VERSION="0.0.1"
+
+# correspondance table for blending modes OCO / Krita
+OCOBlendingModes = {}
+OCOBlendingModes['normal'] = 'normal'
+OCOBlendingModes['darken'] = 'darken'
+OCOBlendingModes['burn'] = 'burn'
+OCOBlendingModes['color'] = 'color'
+OCOBlendingModes['dodge'] = 'dodge'
+OCOBlendingModes['divide'] = 'divide'
+OCOBlendingModes['overlay'] = 'overlay'
+OCOBlendingModes['luminize'] = 'luminosity'
+OCOBlendingModes['soft_light_svg'] = 'soft_light'
+OCOBlendingModes['multiply'] = 'multiply'
+OCOBlendingModes['saturation'] = 'saturation'
+OCOBlendingModes['erase'] = 'erase'
+OCOBlendingModes['lighten'] = 'lighten'
+OCOBlendingModes['screen'] = 'screen'
+OCOBlendingModes['inverse_subtract'] = 'inverse_subtract'
+OCOBlendingModes['subtract'] = 'subtract'
+OCOBlendingModes['darker color'] = 'darker_color'
+OCOBlendingModes['easy burn'] = 'easy_burn'
+OCOBlendingModes['fog_darken_ifs_illusions'] = 'fog_darken'
+OCOBlendingModes['gamma_dark'] = 'gamma_dark'
+OCOBlendingModes['linear_burn'] = 'linear_burn'
+OCOBlendingModes['shade_ifs_illusions'] = 'shade'
+OCOBlendingModes['converse'] = 'converse'
+OCOBlendingModes['and'] = 'and'
+OCOBlendingModes['implication'] = 'implication'
+OCOBlendingModes['nand'] = 'nand'
+OCOBlendingModes['nor'] = 'nor'
+OCOBlendingModes['not_converse'] = 'not_converse'
+OCOBlendingModes['not_implication'] = 'not_implication'
+OCOBlendingModes['or'] = 'or'
+OCOBlendingModes['xnor'] = 'xnor'
+OCOBlendingModes['xor'] = 'xor'
+OCOBlendingModes['dissolve'] = 'dissolve'
+OCOBlendingModes['inc_luminosity'] = 'increase_luminosity'
+OCOBlendingModes['inc_saturation'] = 'increase_saturation'
+OCOBlendingModes['dec_luminosity'] = 'decrease_luminosity'
+OCOBlendingModes['dec_saturation'] = 'decrease_saturation'
+OCOBlendingModes['hue'] = 'hue'
+OCOBlendingModes['divisive_modulo'] = 'divisive_modulo'
+OCOBlendingModes['allanon'] = 'allanon'
+OCOBlendingModes['alphadarken'] = 'alpha_darken'
+OCOBlendingModes['destination-in'] = 'stencil_alpha'
+OCOBlendingModes['hard overlay'] = 'hard_overlay'
+OCOBlendingModes['interpolation'] = 'interpolation'
+OCOBlendingModes['interpolation 2x'] = 'double_interpolation'
+OCOBlendingModes['hard mix'] = 'hard_mix'
+OCOBlendingModes['hard_mix_photoshop'] = 'hard_mix_photoshop'
+OCOBlendingModes['parallel'] = 'parallel'
+OCOBlendingModes['penumbra a'] = 'penumbra_a'
+OCOBlendingModes['penumbra a'] = 'penumbra_b'
+OCOBlendingModes['penumbra a'] = 'penumbra_c'
+OCOBlendingModes['penumbra a'] = 'penumbra_d'
+OCOBlendingModes['greater'] = 'greater'
+OCOBlendingModes['geometric_mean'] = 'geometric_mean'
+OCOBlendingModes['additive_subtractive'] = 'additive_subtractive'
+OCOBlendingModes['diff'] = 'difference'
+OCOBlendingModes['exclusion'] = 'exclusion'
+OCOBlendingModes['negation'] = 'negation'
+OCOBlendingModes['arc_tangent'] = 'arc_tangent'
+OCOBlendingModes['equivalence'] = 'equivalence'
+OCOBlendingModes['freeze_reflect'] = 'freeze_reflect'
+OCOBlendingModes['freeze'] = 'freeze'
+OCOBlendingModes['glow_heat'] = 'glow_heat'
+OCOBlendingModes['heat'] = 'heat'
+OCOBlendingModes['heat_glow'] = 'heat_glow'
+OCOBlendingModes['heat_glow_freeze_reflect_hybrid'] = 'heat_glow_freeze_reflect'
+OCOBlendingModes['glow'] = 'glow'
+OCOBlendingModes['reflect_freeze'] = 'reflect_freeze'
+OCOBlendingModes['reflect'] = 'reflect'
+OCOBlendingModes['inc_intensity'] = 'increase_intensity'
+OCOBlendingModes['inc_saturation_hsi'] = 'increase_saturation_hsi'
+OCOBlendingModes['color_hsi'] = 'color_hsi'
+OCOBlendingModes['dec_intensity'] = 'decrease_intensity'
+OCOBlendingModes['dec_saturation_hsi'] = 'decrease_saturation_hsi'
+OCOBlendingModes['intensity'] = 'intensity'
+OCOBlendingModes['saturation_hsi'] = 'saturation_hsi'
+OCOBlendingModes['hue_hsi'] = 'hue_hsi'
+OCOBlendingModes['inc_lightness'] = 'increase_lightness'
+OCOBlendingModes['inc_saturation_hsl'] = 'increase_saturation_hsl'
+OCOBlendingModes['color_hsl'] = 'color_hsl'
+OCOBlendingModes['dec_lightness'] = 'decrease_lightness'
+OCOBlendingModes['dec_saturation_hsl'] = 'decrease_saturation_hsl'
+OCOBlendingModes['lightness'] = 'lightness'
+OCOBlendingModes['saturation_hsl'] = 'saturation_hsl'
+OCOBlendingModes['hue_hsl'] = 'hue_hsl'
+OCOBlendingModes['inc_saturation_hsv'] = 'increase_saturation_hsv'
+OCOBlendingModes['inc_value'] = 'increase_value'
+OCOBlendingModes['color_hsv'] = 'color_hsv'
+OCOBlendingModes['dec_saturation_hsv'] = 'decrease_saturation_hsv'
+OCOBlendingModes['dec_value'] = 'decrease_value'
+OCOBlendingModes['saturation_hsv'] = 'saturation_hsv'
+OCOBlendingModes['value'] = 'value'
+OCOBlendingModes['lighter color'] = 'lighter_color'
+OCOBlendingModes['easy dodge'] = 'easy_dodge'
+OCOBlendingModes['flat_light'] = 'flat_light'
+OCOBlendingModes['fog_lighten_ifs_illusions'] = 'fog_lighten'
+OCOBlendingModes['linear light'] = 'linear_light'
+OCOBlendingModes['gamma_illumination'] = 'gamma_illumination'
+OCOBlendingModes['luminosity_sai'] = 'luminosity_sai'
+OCOBlendingModes['gamma_light'] = 'gamma_light'
+OCOBlendingModes['soft_light'] = 'soft_light'
+OCOBlendingModes['hard_light'] = 'hard_light'
+OCOBlendingModes['pin_light'] = 'pin_light'
+OCOBlendingModes['vivid_light'] = 'vivid_light'
+OCOBlendingModes['pnorm_a'] = 'pnorm_a'
+OCOBlendingModes['pnorm_b'] = 'pnorm_b'
+OCOBlendingModes['soft_light_ifs_illusions'] = 'soft_light_ifs'
+OCOBlendingModes['soft_light_pegtop_delphi'] = 'soft_light_pegtop_delphi'
+OCOBlendingModes['super_light'] = 'super_light'
+OCOBlendingModes['tint_ifs_illusions'] = 'tint'
+OCOBlendingModes['linear_dodge'] = 'linear_dodge'
+
+# Label Colors
+OCOLabels = list()
+OCOLabels.append([ 0.0 , 0.06 , 0.14, 1.0 ])
+OCOLabels.append([ 1.0 , 0.13 , 0.02, 1.0 ])
+OCOLabels.append([ .99 , 0.75 , 0.14, 1.0 ])
+OCOLabels.append([ 0.03 , 0.28 , 0.66, 1.0 ])
+OCOLabels.append([ 0.30 , 0.06 , 0.29, 1.0 ])
+OCOLabels.append([ 0.21 , 0.46 , 0.24, 1.0 ])
+OCOLabels.append([ 0.25 , 0.66 , 0.78, 1.0 ])
+OCOLabels.append([ 0.83 , 0.43 , 0.81, 1.0 ])
+
+# Methods
+
+def load(filepath):
+    oco = {}
+    with open(filepath, 'r') as ocoFile:
+        oco = json.loads(ocoFile.read())
+    return oco
