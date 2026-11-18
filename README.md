@@ -49,7 +49,7 @@ Unsupported or incompatible modes are **warned** and safely fall back to `normal
 
 ---
 
-## Refressions:
+## Regressions:
 
 -Automatic version updates were removed to comply with Standard Blender Extension practice.
 
