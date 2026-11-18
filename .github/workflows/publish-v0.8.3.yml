@@ -1,0 +1,115 @@
+name: Publish Bluik-Plus 0.8.3
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-v0.8.3.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bluik-plus-v0.8.3-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TAG: v0.8.3
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Verify source and extension manifest
+        shell: bash
+        run: |
+          python - <<'PY'
+          import ast
+          import tomllib
+          from pathlib import Path
+          source=Path('bluik_plus')
+          manifest=tomllib.loads((source/'blender_manifest.toml').read_text())
+          assert manifest['id']=='bluik_plus'
+          assert manifest['version']=='0.8.3'
+          assert manifest['type']=='add-on'
+          assert manifest['license']==['SPDX:GPL-3.0-or-later']
+          assert 1<=len(manifest['tagline'])<=64
+          assert manifest['tagline'][-1] not in '.!?'
+          assert 'description' not in manifest
+          init=(source/'__init__.py').read_text()
+          assert "'version': (0, 8, 3)" in init
+          required=['oca13_import.py','oca.py','oca_transforms.py','oca_shaders.py','blend_modes.py']
+          for name in required: assert (source/name).is_file(), name
+          files=list(source.rglob('*.py'))
+          assert len(files)>25
+          for f in files: ast.parse(f.read_text(),filename=str(f))
+          notes=Path('docs/RELEASE_NOTES_v0.8.3.md').read_text()
+          assert notes and not notes.startswith('# ')
+          assert 'handoff' not in notes.lower()
+          assert '\\u2014' not in notes
+          print('Validated source, manifest and release notes:',len(files),'Python files')
+          PY
+
+      - name: Run transform parsing and version regression tests
+        run: python -m unittest discover -q -s bluik_plus/tests -p test_transform_values.py
+
+      - name: Build extension ZIP and legacy add-on ZIP
+        shell: bash
+        run: |
+          python - <<'PY'
+          import zipfile,hashlib
+          from pathlib import Path
+          source=Path('bluik_plus')
+          dist=Path('dist')
+          dist.mkdir(exist_ok=True)
+          files=sorted(f for f in source.rglob('*') if f.is_file() and f.suffix in ('.py','.toml') and 'tests' not in f.relative_to(source).parts and '__pycache__' not in f.parts)
+          license_file=Path('LICENSE')
+          assert license_file.is_file()
+          outputs=[('bluik-plus_v0.8.3.zip',False),('bluik-plus_v0.8.3-legacy-addon.zip',True)]
+          for name,legacy in outputs:
+              path=dist/name
+              with zipfile.ZipFile(path,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=8) as z:
+                  for file in files:
+                      rel=file.relative_to(source).as_posix()
+                      z.write(file,('bluik_plus/' if legacy else '')+rel)
+                  z.write(license_file,('bluik_plus/' if legacy else '')+'LICENSE')
+              with zipfile.ZipFile(path) as z:
+                  assert z.testzip() is None
+                  names=set(z.namelist())
+                  prefix='bluik_plus/' if legacy else ''
+                  for must in ('__init__.py','blender_manifest.toml','oca.py','oca13_import.py','oca_transforms.py','LICENSE'):
+                      assert prefix+must in names,(name,must)
+                  assert not any(n.endswith('.pyc') or '__pycache__' in n or '/tests/' in n for n in names)
+              print(name,path.stat().st_size,'bytes')
+          with (dist/'SHA256SUMS.txt').open('w') as out:
+              for name,_ in outputs:
+                  path=dist/name
+                  out.write(hashlib.sha256(path.read_bytes()).hexdigest()+'  '+name+'\\n')
+          PY
+
+      - name: Publish Bluik-Plus 0.8.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Release $TAG already exists. Refusing to overwrite it."
+            exit 1
+          fi
+          gh release create "$TAG" \
+            dist/bluik-plus_v0.8.3.zip \
+            dist/bluik-plus_v0.8.3-legacy-addon.zip \
+            dist/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" \
+            --title "Bluik-Plus v0.8.3" \
+            --notes-file docs/RELEASE_NOTES_v0.8.3.md
+          gh release view "$TAG" --json assets --jq '.assets[].name' |
+            grep -Fx 'bluik-plus_v0.8.3.zip'
+          gh release view "$TAG" --json assets --jq '.assets[].name' |
+            grep -Fx 'bluik-plus_v0.8.3-legacy-addon.zip'
