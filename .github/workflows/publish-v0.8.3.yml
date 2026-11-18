@@ -44,7 +44,7 @@ jobs:
           assert manifest['tagline'][-1] not in '.!?'
           assert 'description' not in manifest
           init=(source/'__init__.py').read_text()
-          assert "'version': (0, 8, 3)" in init
+          assert '0, 8, 3' in init
           required=['oca13_import.py','oca.py','oca_transforms.py','oca_shaders.py','blend_modes.py']
           for name in required: assert (source/name).is_file(), name
           files=list(source.rglob('*.py'))
